@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ESNext", // Hoặc ES6/ES2015 tùy phiên bản Node.js bạn dùng
+		"module": "CommonJS", // Dùng CommonJS nếu bạn dùng require()
+		"outDir": "./dist", // Thư mục đầu ra sau khi biên dịch
+		"rootDir": "./src", // Thư mục chứa code TypeScript
+		"strict": true, // Bật các kiểm tra nghiêm ngặt
+		"esModuleInterop": true, // Hỗ trợ import module CommonJS
+		"skipLibCheck": true, // Bỏ qua kiểm tra file .d.ts để tăng tốc
+		"forceConsistentCasingInFileNames": true // Đảm bảo tên file đồng nhất
+	},
+	"include": ["src/**/*"], // Chỉ định thư mục cần biên dịch
+	"exclude": ["node_modules"] // Loại bỏ thư mục không cần biên dịch
+}
