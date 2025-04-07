@@ -1,6 +1,7 @@
 // add-new-feedback.tsx
 import CategoryApis from '@/apis/category.apis';
 import FeedbackApis from '@/apis/feedback.apis';
+import { queryClient } from '@/App';
 import { Button } from '@/components/ui/button';
 import {
 	Dialog,
@@ -17,7 +18,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useAppContext } from '@/contexts/app.context';
-import { queryClient } from '@/main';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Loader2, MessageCircle, Send, Star } from 'lucide-react';
@@ -165,7 +165,7 @@ export default function AddNewFeedback() {
 					<span className='text-sm'>Feedback</span>
 				</Button>
 			</DialogTrigger>
-			<DialogContent className='sm:max-w-[680px] max-w-[calc(100%-30px)] w-full'>
+			<DialogContent className='sm:max-w-[680px] max-w-[calc(100%-40px)] mx-auto w-full'>
 				<DialogHeader>
 					<DialogTitle>Share your feedback</DialogTitle>
 					<DialogDescription>Share your thoughts and suggestions to help us improve.</DialogDescription>
@@ -246,7 +246,6 @@ export default function AddNewFeedback() {
 											</FormControl>
 											<SelectContent>
 												<SelectItem value='open'>Open</SelectItem>
-												<SelectItem value='closed'>Closed</SelectItem>
 												<SelectItem value='inprogress'>In Progress</SelectItem>
 											</SelectContent>
 										</Select>

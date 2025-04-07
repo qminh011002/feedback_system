@@ -35,11 +35,10 @@ interface IComment {
 	feedback_id: string;
 	user_id: string;
 	content: string;
-	is_edited: boolean;
-	is_deleted: boolean;
+	imge_url: string;
+	is_anonymous: boolean;
 	author_name: string;
 	created_at: string;
-	updated_at: string;
 }
 
 interface IHashtag {

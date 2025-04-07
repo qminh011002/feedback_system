@@ -22,6 +22,8 @@ export default class Comment {
         `;
 		const params = [content, user_id, feedback_id, author_name, is_anonymous];
 
+		console.log(params);
+
 		const result = await pool.query(query, params);
 		if (result.rows.length > 0) {
 			return {

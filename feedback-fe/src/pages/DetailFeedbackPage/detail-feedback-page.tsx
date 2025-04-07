@@ -5,13 +5,21 @@ import DetailFeedbackHeader, {
 	DetailFeedbackHeaderSkeleton
 } from '@/pages/DetailFeedbackPage/components/detail-feedback-header';
 import DOMPurify from 'dompurify';
-import { MessageSquare, MessageSquareOff } from 'lucide-react';
+import { MessageSquareOff } from 'lucide-react';
 
+import CommentApis from '@/apis/comment.apis';
 import FeedbackApis from '@/apis/feedback.apis';
+import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Textarea } from '@/components/ui/textarea';
+import { useAppContext } from '@/contexts/app.context';
 import CommentItem from '@/pages/DetailFeedbackPage/components/comment-item';
-import { useQuery } from '@tanstack/react-query';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import { useParams } from 'react-router';
+import { z } from 'zod';
 
 export function ContentFeedbackSkeleton() {
 	return (
@@ -81,8 +89,28 @@ export function CommentSectionSkeleton() {
 	);
 }
 
+const formCommentSchema = z.object({
+	feedback_id: z.string().min(1, 'Feedback ID is required'),
+	content: z.string().min(1, 'Content is required'),
+	is_anonymous: z.boolean(),
+	author_name: z.string().min(1, 'Author name is required'),
+	user_id: z.string().min(1, 'User ID is required')
+});
+
 export default function DetailFeedbackPage() {
+	const { userProfile } = useAppContext();
 	const { id } = useParams();
+
+	const form = useForm({
+		resolver: zodResolver(formCommentSchema),
+		defaultValues: {
+			feedback_id: id as string,
+			content: '',
+			is_anonymous: false,
+			author_name: userProfile?.user_name ?? '',
+			user_id: userProfile?.id ?? ''
+		}
+	});
 
 	const detailFeedback = useQuery({
 		queryKey: ['feedback', id],
@@ -94,6 +122,37 @@ export default function DetailFeedbackPage() {
 		queryKey: ['feedback', id, 'comments'],
 		queryFn: () => FeedbackApis.prototype.getComentsByFeedbackId(id as string),
 		staleTime: 6 * 60 * 1000
+	});
+
+	const createComentMutation = useMutation({
+		mutationFn: (data: {
+			content: string;
+			user_id: string;
+			feedback_id: string;
+			author_name: string;
+			is_anonymous: boolean;
+		}) => {
+			return CommentApis.prototype.createComment(data);
+		}
+	});
+
+	const hadleSubmitComment = form.handleSubmit(async (data) => {
+		try {
+			await createComentMutation.mutateAsync({
+				user_id: userProfile?.id as string,
+				feedback_id: id as string,
+				content: data.content,
+				author_name: data.author_name,
+				is_anonymous: data.is_anonymous
+			});
+
+			listComment.refetch();
+
+			form.reset();
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (error) {
+			toast.error('Failed to post comment');
+		}
 	});
 
 	if (detailFeedback.isLoading || listComment.isLoading) {
@@ -148,22 +207,51 @@ export default function DetailFeedbackPage() {
 				{/* Comment Input */}
 				<div className='mb-8'>
 					<h3 className='text-lg font-semibold mb-4'>Comments</h3>
-					<form className='space-y-4'>
-						<textarea
+					<form
+						className='space-y-4'
+						onSubmit={hadleSubmitComment} // Use proper form submission handler
+					>
+						<Textarea
+							{...form.register('content', {
+								required: 'Comment content is required',
+								maxLength: {
+									value: 1000,
+									message: 'Comment cannot exceed 1000 characters'
+								}
+							})}
 							disabled={data?.is_comment_disabled}
 							placeholder={
 								data?.is_comment_disabled
-									? 'This feedback no longer accept comment'
+									? 'This feedback no longer accepts comments'
 									: 'Write your comment...'
 							}
-							className='w-full disabled:placeholder:italic disabled:cursor-not-allowed px-3 text-[14px]  placeholder:text-[14px] py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent min-h-[100px] resize-y'
+							className='min-h-[130px] text-[14px] placeholder:text-[14px]'
 						/>
-						<div className='flex items-center justify-end'>
-							<div className='flex items-center gap-2 mr-4'>
-								<span className='text-sm text-muted-foreground'>Comment with anonymous</span>
-								<Switch className='disabled:cursor-not-allowed' disabled={data?.is_comment_disabled} />
+
+						<div className='flex items-center justify-between'>
+							<div className='flex items-center gap-2'>
+								<Label htmlFor='anonymous-comment' className='text-xs font-normal'>
+									Comment anonymously
+								</Label>
+								<Switch
+									id='anonymous-comment'
+									checked={form.watch('is_anonymous')}
+									onCheckedChange={(checked) => {
+										form.setValue('is_anonymous', checked);
+										form.setValue(
+											'author_name',
+											checked ? 'Anonymous' : (userProfile?.user_name ?? '')
+										);
+									}}
+									disabled={data?.is_comment_disabled}
+								/>
 							</div>
-							<Button disabled={data?.is_comment_disabled} type='submit' className='px-6 '>
+
+							<Button
+								type='submit'
+								disabled={data?.is_comment_disabled || form.formState.isSubmitting}
+								className='px-6'
+							>
 								Comment
 							</Button>
 						</div>
@@ -181,10 +269,6 @@ export default function DetailFeedbackPage() {
 								<h3 className='text-lg font-medium'>No comments yet</h3>
 								<p className='text-sm text-muted-foreground'>Be the first to share what you think!</p>
 							</div>
-							<Button variant='outline' className='mt-4'>
-								<MessageSquare className='w-4 h-4 mr-2' />
-								Add a comment
-							</Button>
 						</div>
 					)}
 				</div>

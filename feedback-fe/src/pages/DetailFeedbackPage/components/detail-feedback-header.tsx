@@ -1,4 +1,5 @@
 import FeedbackApis from '@/apis/feedback.apis';
+import { queryClient } from '@/App';
 import { BadgeStatus, FeedbackStatus } from '@/components/bagde-status';
 import {
 	AlertDialog,
@@ -26,7 +27,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAppContext } from '@/contexts/app.context';
-import { queryClient } from '@/main';
 import { useMutation } from '@tanstack/react-query';
 import { ChevronRight, MoreHorizontal, Trash } from 'lucide-react';
 import toast from 'react-hot-toast';
