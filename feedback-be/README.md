@@ -44,14 +44,93 @@ Your app should now be running at `http://localhost:5001` (or the port you set i
 
 ## 🧾 Accounts For Test
 
-| Email | Password      |
-|-------------|-----------|
-|    test1@example.com   | test@12345 |
-|    test2@example.com   | test@12345 |
-|    test3@example.com   | test@12345 |
-|    test4@example.com   | test@12345 |
+| Email             | Password   |
+| ----------------- | ---------- |
+| test1@example.com | test@12345 |
+| test2@example.com | test@12345 |
+| test3@example.com | test@12345 |
+| test4@example.com | test@12345 |
 
 > ⚠️ Passwords should always be stored in a **hashed** format.
+
+# README – Database Schema Overview
+
+## Overview
+
+This database schema is designed to manage users, feedback, categories, and comments. It supports feedback categorization, commenting, status tracking, and anonymous interactions.
+
+---
+
+## Table: users
+
+Stores user information.
+
+- id: UUID, primary key, auto-generated
+- username: VARCHAR(50), unique, not null
+- password: VARCHAR(255), not null
+- email: VARCHAR(100), unique, not null
+- role: VARCHAR(20), default 'user'
+- created_at: TIMESTAMP, default now()
+- updated_at: TIMESTAMP, default now()
+- imge_url: TEXT, default profile image URL
+
+---
+
+## Table: categories
+
+Stores feedback categories.
+
+- id: UUID, primary key, auto-generated
+- name: VARCHAR(100), not null
+- description: TEXT
+- created_at: TIMESTAMP, default now()
+- updated_at: TIMESTAMP, default now()
+
+---
+
+## Table: feedbacks
+
+Stores user feedback entries.
+
+- id: UUID, primary key, auto-generated
+- title: VARCHAR(255), not null
+- content: TEXT, not null
+- user_id: UUID, foreign key to users(id)
+- author_name: VARCHAR(100), not null
+- category_id: UUID, foreign key to categories(id)
+- status: VARCHAR(20), default 'open'
+- is_comment_disabled: BOOLEAN, default false
+- is_deleted: BOOLEAN, default false
+- created_at: TIMESTAMP, default now()
+- updated_at: TIMESTAMP, default now()
+- rating: INTEGER, not null
+- is_anonymous: BOOLEAN
+
+Includes trigger: `trigger_update_comment_disabled` to automatically update comment availability based on status changes.
+
+---
+
+## Table: comments
+
+Stores comments on feedback.
+
+- id: UUID, primary key, auto-generated
+- feedback_id: UUID, foreign key to feedbacks(id)
+- user_id: UUID, foreign key to users(id)
+- content: TEXT, not null
+- is_deleted: BOOLEAN, default false
+- author_name: VARCHAR(100), not null
+- created_at: TIMESTAMP, default now()
+- updated_at: TIMESTAMP, default now()
+- is_anonymous: BOOLEAN
+
+---
+
+## Trigger: trigger_update_comment_disabled
+
+- Executes before updating a row in `feedbacks`
+- Checks if the `status` field changes
+- Calls function `update_comment_disabled_on_status_change()` to toggle the `is_comment_disabled` field
 
 ## ✅ You're All Set!
 
