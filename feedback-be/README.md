@@ -46,10 +46,10 @@ Your app should now be running at `http://localhost:5001` (or the port you set i
 
 | Email             | Password   |
 | ----------------- | ---------- |
-| test1@example.com | test@12345 |
-| test2@example.com | test@12345 |
-| test3@example.com | test@12345 |
-| test4@example.com | test@12345 |
+| test1@example.com | test@123456 |
+| test2@example.com | test@123456 |
+| test3@example.com | test@123456 |
+| test4@example.com | test@123456 |
 
 > ⚠️ Passwords should always be stored in a **hashed** format.
 
