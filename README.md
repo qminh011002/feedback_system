@@ -17,7 +17,7 @@ Built with a robust full-stack setup for performance and scalability.
 
 ## 🧠 Backend
 
-> **Stack**: Node.js + TypeScript
+> **Stack**: Node.js + TypeScript + ExpressJS
 
 -   🚀 **Node.js**: High-performance backend with flexibility.
 -   🛠️ **TypeScript**: Safer, more maintainable backend logic.
@@ -46,6 +46,5 @@ Built with a robust full-stack setup for performance and scalability.
 feedback-system/
 ├── frontend/       # React app (TypeScript, Tailwind, ShadCN, etc.)
 ├── backend/        # Node.js app (TypeScript, raw SQL queries)
-├── docs/           # Documentation and specs
 └── README.md
 ```
