@@ -259,18 +259,24 @@ export default function DetailFeedbackPage() {
 				</div>
 
 				{/* Comment List */}
-				<div className='space-y-6'>
-					{commentData && commentData.length > 0 ? (
-						commentData.map((comment) => <CommentItem key={comment.id} data={comment} />)
-					) : (
-						<div className='flex flex-col items-center justify-center py-12 space-y-4'>
-							<MessageSquareOff className='w-12 h-12 text-muted-foreground' />
-							<div className='text-center space-y-1'>
-								<h3 className='text-lg font-medium'>No comments yet</h3>
-								<p className='text-sm text-muted-foreground'>Be the first to share what you think!</p>
+				<div className='px-5'>
+					{/* Comment List */}
+					<div className='space-y-6 max-h-[500px] pb-7 overflow-y-auto '>
+						{/* Thêm max-height và overflow */}
+						{commentData && commentData.length > 0 ? (
+							commentData.map((comment) => <CommentItem key={comment.id} data={comment} />)
+						) : (
+							<div className='flex flex-col items-center justify-center py-12 space-y-4'>
+								<MessageSquareOff className='w-12 h-12 text-muted-foreground' />
+								<div className='text-center space-y-1'>
+									<h3 className='text-lg font-medium'>No comments yet</h3>
+									<p className='text-sm text-muted-foreground'>
+										Be the first to share what you think!
+									</p>
+								</div>
 							</div>
-						</div>
-					)}
+						)}
+					</div>
 				</div>
 			</div>
 		</div>

@@ -22,9 +22,9 @@ export default class Comment {
         `;
 		const params = [content, user_id, feedback_id, author_name, is_anonymous];
 
-		console.log(params);
-
 		const result = await pool.query(query, params);
+
+		console.log(result.rows[0]);
 		if (result.rows.length > 0) {
 			return {
 				id: result.rows[0].id,
