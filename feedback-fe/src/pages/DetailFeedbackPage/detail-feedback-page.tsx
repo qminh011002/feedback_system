@@ -181,6 +181,7 @@ export default function DetailFeedbackPage() {
 				author_name={data?.author_name}
 				category_name={data?.category_name}
 				id={data?.id}
+				is_anonymous={data?.is_anonymous}
 				user_id={data?.user.id}
 			/>
 

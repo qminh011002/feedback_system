@@ -24,7 +24,10 @@ export default function CommentItem({ data }: Props) {
 	return (
 		<div className='group flex gap-3 p-3 hover:bg-muted/50 transition-colors rounded-lg'>
 			<Avatar className='h-9 w-9 mt-0.5'>
-				<AvatarImage src={data.imge_url} alt={data.author_name} />
+				<AvatarImage
+					src={data.is_anonymous ? '/public/app/anonymous_avatar.png' : data.imge_url}
+					alt={data.author_name}
+				/>
 				<AvatarFallback className='text-xs font-medium bg-muted'>
 					{getInitials(data.author_name)}
 				</AvatarFallback>

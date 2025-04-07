@@ -39,6 +39,7 @@ type Props = {
 	category_name?: string;
 	id?: string;
 	user_id?: string;
+	is_anonymous?: boolean;
 };
 
 export function DetailFeedbackHeaderSkeleton() {
@@ -65,7 +66,8 @@ export default function DetailFeedbackHeader({
 	id,
 	img_url,
 	user_id,
-	status: _status
+	status: _status,
+	is_anonymous
 }: Props) {
 	const { userProfile } = useAppContext();
 	const navigate = useNavigate();
@@ -130,8 +132,8 @@ export default function DetailFeedbackHeader({
 			<div className='flex justify-between items-center'>
 				<div className='flex items-center gap-2'>
 					<Avatar className='w-8.5 h-8.5'>
-						<AvatarImage src={img_url} />
-						<AvatarFallback>CN</AvatarFallback>
+						<AvatarImage src={is_anonymous ? '/public/app/anonymous_avatar.png' : img_url} />
+						<AvatarFallback>{is_anonymous ? 'AN' : author_name?.slice(0, 2)}</AvatarFallback>
 					</Avatar>
 
 					<h3 className='font-semibold text-[14px]'>{author_name}</h3>

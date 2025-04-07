@@ -100,7 +100,7 @@ export default function AddNewFeedback() {
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const body = {
 			...values,
-			is_annonymous: isSwitched,
+			is_anonymous: isSwitched,
 			author_name: isSwitched ? values.author_name : userProfile?.user_name,
 			user_id: userProfile?.id as string
 		} as unknown as {
