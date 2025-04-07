@@ -23,7 +23,7 @@ export interface IQueryParams {
 }
 
 const configQueryParams: IQueryParams = {
-	pageSize: 10,
+	pageSize: 7,
 	currentPage: 1
 };
 
