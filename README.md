@@ -46,6 +46,5 @@ Built with a robust full-stack setup for performance and scalability.
 feedback-system/
 ├── frontend/       # React app (TypeScript, Tailwind, ShadCN, etc.)
 ├── backend/        # Node.js app (TypeScript, raw SQL queries)
-├── docs/           # Documentation and specs
 └── README.md
 ```
