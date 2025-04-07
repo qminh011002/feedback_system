@@ -42,6 +42,17 @@ Your app should now be running at `http://localhost:5001` (or the port you set i
 
 ---
 
+## 🧾 Accounts For Test
+
+| Email | Password      |
+|-------------|-----------|
+|    test1@example.com   | test@12345 |
+|    test2@example.com   | test@12345 |
+|    test3@example.com   | test@12345 |
+|    test4@example.com   | test@12345 |
+
+> ⚠️ Passwords should always be stored in a **hashed** format.
+
 ## ✅ You're All Set!
 
 Now you're ready to develop and test your app locally. If you encounter any issues, double-check your `.env` file and ensure all required packages are installed.

@@ -42,7 +42,9 @@ const formSchema = z.object({
 	status: z.enum(['open', 'closed', 'inprogress'], {
 		required_error: 'Please select a status.'
 	}),
-	author_name: z.string().optional()
+	author_name: z.string().optional(),
+	is_anonymous: z.boolean(),
+	user_id: z.string()
 });
 
 export default function AddNewFeedback() {
@@ -59,7 +61,9 @@ export default function AddNewFeedback() {
 			content: '',
 			rating: 0,
 			status: 'open', // Giá trị mặc định,
-			author_name: userProfile?.user_name
+			author_name: userProfile?.user_name,
+			is_anonymous: false,
+			user_id: userProfile?.id
 		}
 	});
 
@@ -73,11 +77,12 @@ export default function AddNewFeedback() {
 		mutationFn: (body: {
 			title: string;
 			content: string;
-			category_id: number;
-			user_id: number;
+			category_id: string;
+			user_id: string;
 			author_name: string;
 			status: string;
 			rating: number;
+			is_anonymous: boolean;
 		}) => FeedbackApis.prototype.createFeedback(body),
 		onSuccess: () => {
 			form.reset();
@@ -95,17 +100,20 @@ export default function AddNewFeedback() {
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const body = {
 			...values,
+			is_annonymous: isSwitched,
+			author_name: isSwitched ? values.author_name : userProfile?.user_name,
 			user_id: userProfile?.id as string
 		} as unknown as {
 			title: string;
 			content: string;
-			category_id: number;
-			user_id: number;
+			category_id: string;
 			author_name: string;
 			status: string;
 			rating: number;
+			is_anonymous: boolean;
+			user_id: string;
 		};
-
+		console.log(body);
 		try {
 			await createFeedbackMutation.mutateAsync(body);
 
@@ -184,6 +192,7 @@ export default function AddNewFeedback() {
 												id='is-anonymous'
 												onCheckedChange={(checked) => {
 													setIsSwitched(checked);
+
 													field.onChange(checked ? 'Anonymous' : userProfile?.user_name);
 												}}
 												defaultChecked={field.value === 'Anonymous'}

@@ -68,20 +68,11 @@ type Props = {
 export default function FeedbackItem({ data }: Props) {
 	return (
 		<Link
-			to='/feedback/1'
+			to={`/feedback/${data.id}`}
 			className='px-4 sm:px-6 py-6 flex flex-col sm:flex-row border-b  gap-4 sm:gap-0 hover:bg-muted/50 transition-colors'
 		>
-			<div className='w-full sm:w-[10%] shrink-0 flex justify-center sm:justify-start gap-2 sm:gap-0'>
-				<div className='flex flex-col items-center justify-center p-2 rounded-lg '>
-					<div className='flex items-center gap-1.5'>
-						<span className='font-semibold text-base text-foreground'>{data.vote_count}</span>
-					</div>
-					<span className='text-xs text-muted-foreground mt-1'>Votes</span>
-				</div>
-			</div>
-
 			{/* Content section */}
-			<div className='w-full sm:w-[90%] flex flex-col gap-3 sm:gap-2'>
+			<div className='w-full sm:w-full flex flex-col gap-3 sm:gap-2'>
 				<div className='flex flex-wrap items-start justify-between gap-x-4 gap-y-2'>
 					{/* Title - sẽ tự động xuống dòng khi cần */}
 					<h2 className='font-semibold text-base sm:text-lg leading-tight break-words flex-1 min-w-[200px] max-w-full'>

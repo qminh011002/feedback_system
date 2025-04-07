@@ -38,8 +38,8 @@ interface IComment {
 	is_edited: boolean;
 	is_deleted: boolean;
 	author_name: string;
-	created_at: Date;
-	updated_at: Date;
+	created_at: string;
+	updated_at: string;
 }
 
 interface IHashtag {
